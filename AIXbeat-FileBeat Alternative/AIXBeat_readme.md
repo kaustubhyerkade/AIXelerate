@@ -4,10 +4,15 @@ Kibana Dashboard for AIX Log Visualization
 Now that we have logs flowing into Elasticsearch, let’s create a Kibana Dashboard for real-time log monitoring.
 
 ✅ What This Dashboard Will Show
+
 1️⃣ System Logs Overview – View logs filtered by severity (INFO, WARN, ERROR).
+
 2️⃣ Log Volume Over Time – Identify log spikes and anomalies.
+
 3️⃣ Top Log Sources – See which AIX servers generate the most logs.
+
 4️⃣ Anomaly Detection Insights – Highlight unusual log patterns.
+
 
 📌 Step 1: Configure Elasticsearch Index Pattern in Kibana
 
