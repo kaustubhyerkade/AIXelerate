@@ -1,0 +1,13 @@
+{
+    "ES_HOST": "http://your-elasticsearch-server:9200",
+    "INDEX_NAME": "aix-metrics",
+    "SLACK_WEBHOOK_URL": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+    "LOG_FILE": "/var/log/aix_metricbeat.log",
+    "JSON_OUTPUT_FILE": "/var/log/aix_metricbeat.json",
+    "COLLECTION_INTERVAL": 10,
+    "ALERT_THRESHOLDS": {
+        "cpu": 90,
+        "memory": 90,
+        "disk": 90
+    }
+}
