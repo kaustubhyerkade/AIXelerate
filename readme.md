@@ -1,7 +1,7 @@
 
 
 
-![Logo](https://github.com/kaustubhyerkade/AIXelerate/blob/main/aixelerate.jpg)
+![Logo](https://github.com/kaustubhyerkade/AIXelerate/blob/main/logo_aixelerate.jpg)
 
 
 # AIXELERATE 
