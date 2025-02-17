@@ -1,4 +1,3 @@
-
 import os
 import time
 import json
@@ -8,6 +7,8 @@ import threading
 import gzip
 import ssl
 import yaml
+import numpy as np
+from kafka import KafkaProducer
 
 # Load Configuration
 CONFIG_FILE = "config.json"
@@ -53,8 +54,7 @@ def read_syslog():
         
         # Filter by facility
         if CONFIG["syslog_facility"] in log:
-            send_to_logstash([log])
-            send_to_elasticsearch([log])
+            process_logs([log])
 
 # Compress Logs
 def compress_logs(logs):
@@ -69,6 +69,57 @@ def create_tls_socket():
     secure_sock = context.wrap_socket(sock, server_hostname=CONFIG["logstash_host"])
     
     return secure_sock
+
+# Send Logs to Kafka
+def send_to_kafka(logs):
+    if not logs:
+        return
+    
+    try:
+        producer = KafkaProducer(
+            bootstrap_servers=CONFIG["kafka_broker"],
+            security_protocol="SSL" if CONFIG["tls_enabled"] else "PLAINTEXT",
+            ssl_cafile=CONFIG["tls_cert"] if CONFIG["tls_enabled"] else None
+        )
+        for log in logs:
+            producer.send(CONFIG["kafka_topic"], log.encode())
+        producer.flush()
+        print(f"Sent {len(logs)} logs to Kafka topic '{CONFIG['kafka_topic']}'")
+    except Exception as e:
+        print(f"Kafka Error: {e}")
+
+# Send Alerts for Anomalous Logs
+def send_alert(message):
+    if CONFIG["alert_type"] == "email":
+        requests.post(CONFIG["email_api"], json={"to": CONFIG["alert_email"], "subject": "Log Anomaly", "body": message})
+    elif CONFIG["alert_type"] == "slack":
+        requests.post(CONFIG["slack_webhook"], json={"text": message})
+
+# Anomaly Detection (Z-score)
+def detect_anomalies(logs):
+    log_lengths = [len(log) for log in logs]
+    if len(log_lengths) < 10:
+        return []
+
+    mean = np.mean(log_lengths)
+    std_dev = np.std(log_lengths)
+    anomalies = [log for log in logs if abs(len(log) - mean) > 2 * std_dev]
+
+    if anomalies:
+        send_alert(f"🚨 Detected {len(anomalies)} anomalies in logs!")
+    
+    return anomalies
+
+# Process Logs
+def process_logs(logs):
+    if not logs:
+        return
+
+    anomalies = detect_anomalies(logs)
+
+    send_to_kafka(logs)
+    send_to_logstash(logs)
+    send_to_elasticsearch(logs)
 
 # Send Logs to Logstash with TLS
 def send_to_logstash(logs):
@@ -122,8 +173,7 @@ def process_log_file(log_file, registry):
         registry[log_file] = new_position
 
         if logs:
-            send_to_logstash(logs)
-            send_to_elasticsearch(logs)
+            process_logs(logs)
 
         save_registry(registry)
         time.sleep(CONFIG["read_interval"])
@@ -138,7 +188,6 @@ def main():
         threads.append(t)
         t.start()
 
-    # Start syslog monitoring in a separate thread
     if CONFIG["syslog_enabled"]:
         t_syslog = threading.Thread(target=read_syslog)
         threads.append(t_syslog)
