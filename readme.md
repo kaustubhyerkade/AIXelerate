@@ -10,7 +10,7 @@ AIXELERATE (AIX Accelarate) is a lightweight, custom-built beat for IBM AIX to c
 
 AIX is widely used in Banks & Financial institutions for high-performance transactions. Government agencies using AIX for secure applications. Large enterprises running WebSphere, SAP, Oracle on AIX.
 
-Our Mission:
+Project Mission:
 
 - Bridge the gap between AIX servers and Elasticsearch Beats. 
 - Provide a lightweight, efficient, and secure log-forwarding solution. 
@@ -25,7 +25,7 @@ This project can be used by the following companies:
 - Government agencies using AIX for secure applications. 
 - Large enterprises running WebSphere, SAP, Oracle on AIX.
 - Enterprises using IBM AIX for mission-critical workloads.
-- Financial institutions, telecom, healthcare, and manufacturing companies using AIX.
+- Institutions- Finance ,  telecom, healthcare, and manufacturing companies using AIX.
 - IT teams that need real-time observability but lack native solutions.
 
  
