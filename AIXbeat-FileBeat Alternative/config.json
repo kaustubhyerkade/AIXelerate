@@ -1,0 +1,18 @@
+{
+    "log_files": ["/var/log/app.log", "/var/log/syslog"],
+    "registry_file": "/var/log/aix_filebeat_registry.json",
+    "logstash_host": "192.168.1.1",
+    "logstash_port": 5044,
+    "logstash_protocol": "tcp",
+    "elasticsearch_url": "https://192.168.1.20:9200/_bulk",
+    "elasticsearch_index": "aix-logs",
+    "syslog_enabled": true,
+    "syslog_socket": "/dev/log",
+    "syslog_facility": "auth",
+    "tls_enabled": true,
+    "tls_cert": "/etc/ssl/certs/ca-certificates.crt",
+    "read_interval": 2,
+    "use_compression": true,
+    "retry_count": 3,
+    "retry_delay": 5
+}
