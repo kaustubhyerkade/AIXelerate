@@ -1,7 +1,7 @@
 {
     "log_files": ["/var/log/app.log", "/var/log/syslog"],
     "registry_file": "/var/log/aix_filebeat_registry.json",
-    "logstash_host": "192.168.1.1",
+    "logstash_host": "192.168.1.10",
     "logstash_port": 5044,
     "logstash_protocol": "tcp",
     "elasticsearch_url": "https://192.168.1.20:9200/_bulk",
@@ -14,5 +14,11 @@
     "read_interval": 2,
     "use_compression": true,
     "retry_count": 3,
-    "retry_delay": 5
+    "retry_delay": 5,
+    "kafka_broker": "192.168.1.30:9092",
+    "kafka_topic": "aix_logs",
+    "alert_type": "slack",
+    "slack_webhook": "https://hooks.slack.com/services/TOKEN",
+    "email_api": "http://email-service/send",
+    "alert_email": "alerts@example.com"
 }
